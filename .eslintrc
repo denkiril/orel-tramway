@@ -1,0 +1,72 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": ["plugin:@angular-eslint/recommended"],
+  "rules": {
+    "@angular-eslint/directive-selector": [
+      "error",
+      { "type": "attribute", "style": "camelCase" }
+    ],
+    "@angular-eslint/component-selector": [
+      "error",
+      { "type": "element", "style": "kebab-case" }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.component.ts"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+      },
+      "plugins": ["@angular-eslint/template"],
+      "processor": "@angular-eslint/template/extract-inline-html"
+    },
+    {
+      "files": ["src/**/*.html"],
+      "rules": {
+        "max-len": "off"
+      }
+    },
+    {
+      "files": ["src/**/*.ts"],
+      "extends": [
+        "airbnb-typescript/base",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+      },
+      "rules": {
+        "import/no-unresolved": "off",
+        "import/prefer-default-export": "off",
+        "lines-between-class-members": "off",
+        "@typescript-eslint/unbound-method": [
+          "error",
+          {
+            "ignoreStatic": true
+          }
+        ],
+        "class-methods-use-this": "off",
+        "no-underscore-dangle": "off",
+        "no-param-reassign": "off",
+        "no-plusplus": "off",
+        "no-return-assign": "off",
+        "@typescript-eslint/camelcase": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "packageDir": "./"
+          }
+        ]
+      }
+    }
+  ]
+}

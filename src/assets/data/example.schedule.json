@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1,
+    "name": "ЖД Вокзал – Кольцо ТМК Гринн",
+    "stations": [1, 2],
+    "ending_stations": [
+      {
+        "id": 1,
+        "workday_trips": {
+          "departure_time": [348, 372, 396],
+          "to_depot": [0]
+        },
+        "dayoff_trips": {
+          "departure_time": [351, 372, 393],
+          "to_depot": []
+        }
+      },
+      {
+        "id": 2,
+        "workday_trips": {
+          "departure_time": [353, 377, 401],
+          "to_depot": []
+        },
+        "dayoff_trips": {
+          "departure_time": [344, 364, 406],
+          "to_depot": []
+        }
+      }
+    ]
+  }
+]

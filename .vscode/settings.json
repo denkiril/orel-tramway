@@ -1,9 +1,9 @@
 {
-  "eslint.validate": ["javascript", "typescript", "html"],
+  // "eslint.validate": ["javascript", "typescript"],
 
   "eslint.options": {
-    "configFile": ".eslintrc",
-    "extensions": [".js", ".ts", "html"]
+    // "configFile": ".eslintrc",
+    // "extensions": [".js", ".ts"]
   },
 
   "editor.codeActionsOnSave": {

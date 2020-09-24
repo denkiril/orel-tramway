@@ -1,17 +1,39 @@
 :host {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  font-weight: 300;
+  font-size: 16px;
 }
 
 .main-panel {
   width: 100%;
   max-width: 600px;
   height: 100%;
+  min-height: 600px;
   flex-shrink: 0;
-  border: solid 1px black;
+  padding: 16px;
 }
 
 .map-panel {
   flex-grow: 1;
+  min-height: 500px;
+}
+
+@media (max-width: 992px) {
+  :host {
+    flex-direction: column;
+  }
+
+  .main-panel {
+    max-width: none;
+    height: 600px;
+  }
+}
+
+.controls-block {
+  margin-bottom: 16px;
+
+  .control {
+    margin-bottom: 8px;
+  }
 }

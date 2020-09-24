@@ -1,5 +1,10 @@
 <div class="main-panel">
-  <p>main-page panel</p>
+  <div class="controls-block">
+    <div *ngFor="let route of routes" 
+      class="control">
+      <checkbox [checked]="true" textRight="№ {{ route.id }} {{ route.name }}"></checkbox>
+    </div>
+  </div>
 
 </div>
 

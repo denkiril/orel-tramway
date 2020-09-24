@@ -1,0 +1,46 @@
+label {
+  display: inline;
+  margin: 0;
+  position: relative;
+
+  input {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  
+  .box {
+    width: 24px;
+    height: 24px;
+  }
+  
+  input:enabled+.box {
+    cursor: pointer;
+  }
+  
+  input+* .box__off {
+    fill: var(--label-tetriary);
+  }
+  
+  input:checked {
+    &+* .box__off {
+      fill: none;
+    }
+  
+    &+* .box__back {
+      fill: var(--accent-blue);
+    }
+  
+    &+* .box__front {
+      fill: var(--light-01);
+    }
+  }
+  
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

@@ -1,8 +1,35 @@
 <div class="main-panel">
   <div class="controls-block">
-    <div *ngFor="let route of routes" 
-      class="control">
-      <checkbox [checked]="true" textRight="№ {{ route.id }} {{ route.name }}"></checkbox>
+    <div class="routes-block">
+      <div *ngFor="let route of routes" 
+        class="control">
+        <checkbox 
+          [size]="20"
+          textRight="№ {{ route.id }} {{ route.name }}"
+          [checked]="!!route.show" 
+          (changeChecked)="changeRouteShow(route)"
+        ></checkbox>
+      </div>
+    </div>
+
+    <div>
+      <p class="days-header">Расписание на:</p>
+
+      <div class="control">
+        <radiobutton 
+          textRight="рабочий день{{today === DAY.WORKDAY ? IS_TODAY : ''}}"
+          [checked]="showDay === DAY.WORKDAY"
+          (changeValue)="changeDayShow(DAY.WORKDAY)">
+        </radiobutton>
+      </div>
+
+      <div class="control">
+        <radiobutton 
+          textRight="выходной день{{today === DAY.DAYOFF ? IS_TODAY : ''}}"
+          [checked]="showDay === DAY.DAYOFF"
+          (changeValue)="changeDayShow(DAY.DAYOFF)">>
+        </radiobutton>
+      </div>
     </div>
   </div>
 

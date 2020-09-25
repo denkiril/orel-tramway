@@ -38,6 +38,7 @@ routes.forEach(route => {
 
 function makeTrips(tripsStr) {
   // tripsStr = "5:48, 6:12, ... , 15:12, 15:24 (ДО ДЕПО), ... , 22:48, 23:26 (ДО ДЕПО)"
+  const text = tripsStr;
   const departure_time = [];
   const to_depot = [];
 
@@ -59,10 +60,10 @@ function makeTrips(tripsStr) {
     departure_time.push(hours * 60 + minutes);
   });
 
-  return { departure_time, to_depot };
+  return { text, departure_time, to_depot };
 }
 
-console.log('schedule:', schedule);
+// console.log('schedule:', schedule);
 fs.writeFile(schedulePath, JSON.stringify(schedule), (err) => {
   if (err) throw err;
   console.log('File \x1b[36m%s\x1b[0m is created successfully.', schedulePath);

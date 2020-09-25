@@ -32,8 +32,19 @@
 
 .controls-block {
   margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
 
   .control {
     margin-bottom: 8px;
   }
+}
+
+.routes-block {
+  min-width: 0px;
+}
+
+.days-header {
+  font-weight: normal;
+  margin-bottom: 6px;
 }

@@ -12,12 +12,12 @@ header {
   height: 48px;
   display: flex;
   align-items: center;
-  padding-left: 8px;
+  justify-content: space-between;
+  padding: 0 8px;
   background-color: var(--dark-100);
+  color: var(--accent-orange);
 
-  .header-title {
-    color: var(--accent-orange);
-  }
+  // .header-title {}
 }
 
 main {

@@ -20,17 +20,18 @@ const schedule = [];
 routes.forEach(route => {
   const scheduleItem = {
     ...route,
-    ending_stations: []
+    start_stations: []
   };
 
-  route.ending_stations.forEach(station => {
+  route.start_stations.forEach(station => {
     const stationSchedule = {
       id: station.id,
+      course: station.course,
       workday_trips: makeTrips(station.workday_trips),
       dayoff_trips: makeTrips(station.dayoff_trips)
     };
 
-    scheduleItem.ending_stations.push(stationSchedule);
+    scheduleItem.start_stations.push(stationSchedule);
   });
   
   schedule.push(scheduleItem);
@@ -63,7 +64,7 @@ function makeTrips(tripsStr) {
   return { text, departure_time, to_depot };
 }
 
-// console.log('schedule:', schedule);
+console.log('schedule:', schedule);
 fs.writeFile(schedulePath, JSON.stringify(schedule), (err) => {
   if (err) throw err;
   console.log('File \x1b[36m%s\x1b[0m is created successfully.', schedulePath);

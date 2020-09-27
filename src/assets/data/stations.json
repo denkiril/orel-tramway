@@ -2,26 +2,36 @@
   {
     "id": 1,
     "name": "ЖД Вокзал (отправление)",
-    "ending": true
+    "start": true
   },
   {
     "id": 2,
     "name": "Кольцо ТМК Гринн - на Вокзал",
-    "ending": true
+    "start": true
   },
   {
     "id": 3,
     "name": "Улица Пушкина (отправление)",
-    "ending": true
+    "start": true
   },
   {
     "id": 4,
     "name": "Завод Химмаш (отправление)",
-    "ending": true
+    "start": true
   },
   {
     "id": 5,
     "name": "Школа № 35 (отправление)",
-    "ending": true
+    "start": true
+  },
+  {
+    "id": 6,
+    "name": "ТТП - на Гринн/Химмаш",
+    "start": true
+  },
+  {
+    "id": 7,
+    "name": "ТТП - на Вокзал/Пушкина",
+    "start": true
   }
 ]

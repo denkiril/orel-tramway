@@ -33,6 +33,12 @@
     </div>
   </div>
 
+  <ng-select 
+    placeholder="Выберите остановку"
+    [items]="stations"
+    (change)="changeStation($event)"
+  ></ng-select>
+
 </div>
 
 <div class="map-panel">

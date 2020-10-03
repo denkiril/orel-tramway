@@ -34,10 +34,23 @@
   </div>
 
   <ng-select 
+    class="custom-select"
     placeholder="Выберите остановку"
-    [items]="stations"
+    [items]="stationsForSelect"
     (change)="changeStation($event)"
-  ></ng-select>
+    bindValue="id"
+    bindLabel="name"
+  >
+    <ng-template ng-option-tmp let-item="item">
+      <span>{{ item.name }}</span>
+      <span>{{ item.routesStr }}</span>
+    </ng-template>
+
+    <ng-template ng-label-tmp let-item="item">
+      <span>{{ item.name }}</span>
+      <span class="routes-str">{{ item.routesStr }}</span>
+    </ng-template>
+  </ng-select>
 
 </div>
 

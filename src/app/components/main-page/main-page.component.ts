@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {first} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
+import {first} from 'rxjs/operators';
 
 enum DAY {
   WORKDAY = 'workday',
   DAYOFF = 'dayoff'
 }
 
-interface Trip {
+interface Trips {
   departure_time: number[];
   to_depot: number[];
   text?: string;
@@ -18,8 +18,8 @@ interface Trip {
 interface StartStation {
   id: number;
   course: number;
-  workday_trips: Trip;
-  dayoff_trips: Trip;
+  workday_trips: Trips;
+  dayoff_trips: Trips;
 }
 
 interface Route {
@@ -36,6 +36,16 @@ interface Station {
   start?: boolean;
   routesIds?: number[];
   routesStr?: string;
+}
+
+interface Schedule {
+  routeId: number;
+  trips: Trips;
+}
+
+interface ScheduleRow {
+  routeId: number;
+  trips: {time: number; timeStr: string}[];
 }
 
 const SCHEDULE_URL = 'assets/data/schedule.json';
@@ -58,6 +68,7 @@ export class MainPageComponent implements OnInit {
   showDay = DAY.WORKDAY;
   today = DAY.WORKDAY; // TODO определять
   schedule = '';
+  scheduleRows: ScheduleRow[][] = [];
 
   constructor(private http: HttpClient, private changeDetector: ChangeDetectorRef) {}
 
@@ -130,7 +141,7 @@ export class MainPageComponent implements OnInit {
 
   private updateSchedule(): void {
     console.log('updateSchedule', this.selectedStationId);
-    this.schedule = '';
+    const schedules: Schedule[] = [];
 
     if (this.selectedStationId) {
       const showWorkday = this.showDay === DAY.WORKDAY;
@@ -139,23 +150,58 @@ export class MainPageComponent implements OnInit {
         if (route.show) {
           route.stations.forEach((arr: number[]) => {
             const index = arr.indexOf(this.selectedStationId);
+
             if (index > -1 && index < arr.length - 1) {
               const startStation = route.start_stations.find(
                 (item: StartStation) => item.id === arr[0]
               );
-              const trips = showWorkday ? startStation?.workday_trips : startStation?.dayoff_trips;
-              this.schedule += `${route.name}: ${trips?.text || ''}\n`;
+
+              if (startStation) {
+                const trips = showWorkday ? startStation.workday_trips : startStation.dayoff_trips;
+                schedules.push({routeId: route.id, trips});
+              }
             }
           });
         }
       });
+
+      this.prepareSchedule(schedules);
     }
+  }
+
+  private prepareSchedule(schedules: Schedule[]): void {
+    console.log('schedules', schedules);
+    this.scheduleRows = [];
+
+    schedules.forEach((item: Schedule) => {
+      const {routeId} = item;
+
+      item.trips.departure_time.forEach((time: number) => {
+        const hour = Math.floor(time / 60);
+        const minStr = (time - hour * 60).toString().padStart(2, '0');
+        const timeStr = `${hour}:${minStr}`;
+
+        if (this.scheduleRows[hour] === undefined) this.scheduleRows[hour] = [{routeId, trips: []}];
+
+        if (!this.scheduleRows[hour].find((row: ScheduleRow) => row.routeId === routeId)) {
+          this.scheduleRows[hour].push({routeId, trips: []});
+        }
+
+        this.scheduleRows[hour]
+          .find((row: ScheduleRow) => row.routeId === routeId)
+          ?.trips.push({time, timeStr});
+      });
+    });
+
+    console.log('scheduleRows', this.scheduleRows);
+    // this.schedule = this.scheduleRows.join(', ');
   }
 
   changeRouteShow(route: Route): void {
     route.show = !route.show;
     console.log('routes', this.routes);
     this.prepareStationsForSelect();
+    this.updateSchedule();
   }
 
   changeDayShow(day: DAY): void {

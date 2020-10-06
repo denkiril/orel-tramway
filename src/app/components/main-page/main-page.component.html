@@ -53,8 +53,15 @@
   </ng-select>
 
   <div class="schedule-block">
-    <div class="schedule">
-      {{ schedule }}
+    <div *ngIf="scheduleRows.length" 
+      class="schedule"
+      >
+      <div *ngFor="let row of scheduleRows">
+        <p *ngFor="let route of row">
+          <span *ngFor="let trip of route.trips">{{ trip.timeStr }}</span>
+          <span>[{{ route.routeId }}]</span>
+        </p>
+      </div>
     </div>
   </div>
 

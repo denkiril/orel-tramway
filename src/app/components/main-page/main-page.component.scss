@@ -11,7 +11,11 @@
   height: 100%;
   min-height: 600px;
   flex-shrink: 0;
-  padding: 16px;
+  border-right: solid 1px var(--light-02);
+
+  .main-section {
+    padding: 16px 16px 8px 16px;
+  }
 }
 
 .map-panel {
@@ -22,12 +26,13 @@
 @media (max-width: 992px) {
   :host {
     flex-direction: column;
+    align-items: center;
   }
 
-  .main-panel {
-    max-width: none;
-    height: 600px;
-  }
+  // .main-panel {
+  //   max-width: none;
+  //   height: 600px;
+  // }
 }
 
 .controls-block {
@@ -40,6 +45,12 @@
   }
 }
 
+@media (max-width: 476px) {
+  .controls-block {
+    flex-wrap: wrap;
+  }
+}
+
 .routes-block {
   min-width: 0px;
 }
@@ -47,6 +58,10 @@
 .days-header {
   font-weight: normal;
   margin-bottom: 6px;
+}
+
+.ng-select.custom-select {
+  margin-bottom: 8px;
 }
 
 .ng-select.custom-select ::ng-deep .ng-option {
@@ -59,9 +74,63 @@
 }
 
 .schedule-block {
-  background-color: aquamarine;
+  height: 540px;
+  overflow-y: auto;
+  // background-color: aquamarine;
+
+  .schedule {
+    width: 540px;
+    margin-left: 8px;
+  }
+
+  .schedule-row {
+    padding: 4px;
+    border-bottom: solid 1px var(--disabled-24);
+  }
+
+  .route {
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+
+    .route-trips {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .route-number {
+      flex-shrink: 0;
+    }
+  }
 
   span {
-    margin-right: 4px;
+    margin-right: 8px;
+  }
+
+  .depot {
+    color: var(--accent-pink);
+  }
+}
+
+@media (max-width: 992px) {
+  .schedule-block {
+    height: 480px;
+  }
+}
+
+@media (max-width: 620px) {
+  .schedule-block .schedule {
+    width: auto;
+  }
+}
+
+.time-block {
+  border-top: solid 1px var(--light-02);
+  padding: 8px 16px;
+
+  & > div {
+    height: 40px;
+    display: flex;
+    align-items: center;
   }
 }

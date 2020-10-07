@@ -1,70 +1,100 @@
 <div class="main-panel">
-  <div class="controls-block">
-    <div class="routes-block">
-      <div *ngFor="let route of routes" 
-        class="control">
-        <checkbox 
-          [size]="20"
-          textRight="№ {{ route.id }} {{ route.name }}"
-          [checked]="!!route.show" 
-          (changeChecked)="changeRouteShow(route)"
-        ></checkbox>
+  <div class="main-section">
+
+    <div class="controls-block">
+      <div class="routes-block">
+        <div *ngFor="let route of routes" 
+          class="control">
+          <checkbox 
+            [size]="20"
+            textRight="№ {{ route.id }} {{ route.name }}"
+            [checked]="!!route.show" 
+            (changeChecked)="changeRouteShow(route)">
+          </checkbox>
+        </div>
       </div>
+  
+      <div>
+        <p class="days-header">Расписание на:</p>
+  
+        <div class="control">
+          <radiobutton 
+            textRight="рабочий день{{today === DAY.WORKDAY ? IS_TODAY : ''}}"
+            [checked]="showDay === DAY.WORKDAY"
+            (changeValue)="changeDayShow(DAY.WORKDAY)">
+          </radiobutton>
+        </div>
+  
+        <div class="control">
+          <radiobutton 
+            textRight="выходной день{{today === DAY.DAYOFF ? IS_TODAY : ''}}"
+            [checked]="showDay === DAY.DAYOFF"
+            (changeValue)="changeDayShow(DAY.DAYOFF)">>
+          </radiobutton>
+        </div>
+      </div>
+    </div>
+  
+    <ng-select 
+      class="custom-select"
+      placeholder="Выберите остановку"
+      [items]="stationsForSelect"
+      (change)="changeStation($event)"
+      bindValue="id"
+      bindLabel="name"
+    >
+      <ng-template ng-option-tmp let-item="item">
+        <span>{{ item.name }}</span>
+        <span>{{ item.routesStr }}</span>
+      </ng-template>
+  
+      <ng-template ng-label-tmp let-item="item">
+        <span>{{ item.name }}</span>
+        <span class="routes-str">{{ item.routesStr }}</span>
+      </ng-template>
+    </ng-select>
+  
+    <div class="schedule-block">
+      <div *ngIf="scheduleObject.show" class="schedule">
+  
+        <ng-container *ngFor="let row of scheduleObject.rows">
+          <div class="schedule-row">
+            <ng-container *ngFor="let rowRoute of row.rowRoutes">
+              <div *ngIf="rowRoute.route.show"
+                class="route"
+                >
+                <div class="route-trips">
+                  <span *ngFor="let trip of rowRoute.trips" 
+                    [ngClass]="{'depot': trip.to_depot}"
+                  >{{ trip.timeStr }}{{ trip.to_depot ? ' (до депо)' : '' }}</span>
+                </div>
+                <div class="route-number">[{{ rowRoute.route.id }}]</div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+  
+      </div>
+    </div>
+  </div>
+
+  <div class="time-block">
+    <div>
+      <checkbox
+        [size]="20"
+        [checked]="showCurrentTime"
+        textRight="На текущее время:">
+      </checkbox>
+      <div>{{ currentDatetime | date:'E, d MMM, hh:mm' }}</div>
     </div>
 
     <div>
-      <p class="days-header">Расписание на:</p>
-
-      <div class="control">
-        <radiobutton 
-          textRight="рабочий день{{today === DAY.WORKDAY ? IS_TODAY : ''}}"
-          [checked]="showDay === DAY.WORKDAY"
-          (changeValue)="changeDayShow(DAY.WORKDAY)">
-        </radiobutton>
-      </div>
-
-      <div class="control">
-        <radiobutton 
-          textRight="выходной день{{today === DAY.DAYOFF ? IS_TODAY : ''}}"
-          [checked]="showDay === DAY.DAYOFF"
-          (changeValue)="changeDayShow(DAY.DAYOFF)">>
-        </radiobutton>
-      </div>
+      <checkbox
+        [size]="20"
+        textRight="На выбранное время:">
+      </checkbox>
     </div>
   </div>
-
-  <ng-select 
-    class="custom-select"
-    placeholder="Выберите остановку"
-    [items]="stationsForSelect"
-    (change)="changeStation($event)"
-    bindValue="id"
-    bindLabel="name"
-  >
-    <ng-template ng-option-tmp let-item="item">
-      <span>{{ item.name }}</span>
-      <span>{{ item.routesStr }}</span>
-    </ng-template>
-
-    <ng-template ng-label-tmp let-item="item">
-      <span>{{ item.name }}</span>
-      <span class="routes-str">{{ item.routesStr }}</span>
-    </ng-template>
-  </ng-select>
-
-  <div class="schedule-block">
-    <div *ngIf="scheduleRows.length" 
-      class="schedule"
-      >
-      <div *ngFor="let row of scheduleRows">
-        <p *ngFor="let route of row">
-          <span *ngFor="let trip of route.trips">{{ trip.timeStr }}</span>
-          <span>[{{ route.routeId }}]</span>
-        </p>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <div class="map-panel">

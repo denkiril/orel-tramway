@@ -34,18 +34,36 @@ interface Station {
   id: number;
   name: string;
   start?: boolean;
+  offset?: number;
   routesIds?: number[];
   routesStr?: string;
 }
 
-interface Schedule {
-  routeId: number;
+interface RouteSchedule {
+  route: Route;
   trips: Trips;
 }
 
+interface RowTrip {
+  time: number;
+  timeStr: string;
+  to_depot?: boolean;
+}
+
+interface RowRouteSchedule {
+  route: Route;
+  trips: RowTrip[];
+}
+
 interface ScheduleRow {
-  routeId: number;
-  trips: {time: number; timeStr: string}[];
+  hour: number;
+  rowRoutes: RowRouteSchedule[];
+}
+
+interface ScheduleObject {
+  routes: Route[];
+  rows: ScheduleRow[];
+  show: boolean;
 }
 
 const SCHEDULE_URL = 'assets/data/schedule.json';
@@ -67,12 +85,14 @@ export class MainPageComponent implements OnInit {
   DAY = DAY;
   showDay = DAY.WORKDAY;
   today = DAY.WORKDAY; // TODO определять
-  schedule = '';
-  scheduleRows: ScheduleRow[][] = [];
+  scheduleObject: ScheduleObject = {routes: [], rows: [], show: false};
+  currentDatetime: Date | undefined;
+  showCurrentTime = true;
 
   constructor(private http: HttpClient, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.currentDatetime = new Date();
     this.getData();
   }
 
@@ -141,67 +161,89 @@ export class MainPageComponent implements OnInit {
 
   private updateSchedule(): void {
     console.log('updateSchedule', this.selectedStationId);
-    const schedules: Schedule[] = [];
+    this.scheduleObject = {routes: [], rows: [], show: false};
+    const routeSchedules: RouteSchedule[] = [];
 
     if (this.selectedStationId) {
       const showWorkday = this.showDay === DAY.WORKDAY;
 
       this.routes.forEach((route: Route) => {
-        if (route.show) {
-          route.stations.forEach((arr: number[]) => {
-            const index = arr.indexOf(this.selectedStationId);
+        route.stations.forEach((arr: number[]) => {
+          const index = arr.indexOf(this.selectedStationId);
 
-            if (index > -1 && index < arr.length - 1) {
-              const startStation = route.start_stations.find(
-                (item: StartStation) => item.id === arr[0]
-              );
+          if (index > -1 && index < arr.length - 1) {
+            const startStation = route.start_stations.find(
+              (item: StartStation) => item.id === arr[0]
+            );
 
-              if (startStation) {
-                const trips = showWorkday ? startStation.workday_trips : startStation.dayoff_trips;
-                schedules.push({routeId: route.id, trips});
-              }
+            let offsetSum = 0;
+            for (let i = 1; i <= index; i++) {
+              offsetSum += this.stations.find((s: Station) => s.id === arr[i])?.offset || 0;
             }
-          });
-        }
+            const offset = Math.floor(offsetSum / 60);
+
+            if (startStation) {
+              const startTrips = showWorkday
+                ? startStation.workday_trips
+                : startStation.dayoff_trips;
+
+              const trips = {...startTrips};
+              trips.departure_time = trips.departure_time.map((time: number) => time + offset);
+
+              routeSchedules.push({route, trips});
+            }
+          }
+        });
       });
 
-      this.prepareSchedule(schedules);
+      this.prepareSchedule(routeSchedules);
     }
+    console.log('scheduleObject:', this.scheduleObject);
   }
 
-  private prepareSchedule(schedules: Schedule[]): void {
-    console.log('schedules', schedules);
-    this.scheduleRows = [];
+  private prepareSchedule(routeSchedules: RouteSchedule[]): void {
+    console.log('routeSchedules', routeSchedules);
 
-    schedules.forEach((item: Schedule) => {
-      const {routeId} = item;
+    routeSchedules.forEach((routeSchedule: RouteSchedule) => {
+      const {route} = routeSchedule;
+      this.scheduleObject.routes.push(route);
 
-      item.trips.departure_time.forEach((time: number) => {
+      routeSchedule.trips.departure_time.forEach((time: number, index: number) => {
         const hour = Math.floor(time / 60);
         const minStr = (time - hour * 60).toString().padStart(2, '0');
         const timeStr = `${hour}:${minStr}`;
-
-        if (this.scheduleRows[hour] === undefined) this.scheduleRows[hour] = [{routeId, trips: []}];
-
-        if (!this.scheduleRows[hour].find((row: ScheduleRow) => row.routeId === routeId)) {
-          this.scheduleRows[hour].push({routeId, trips: []});
+        const rowTrip: RowTrip = {time, timeStr};
+        if (routeSchedule.trips.to_depot.includes(index)) {
+          rowTrip.to_depot = true;
         }
 
-        this.scheduleRows[hour]
-          .find((row: ScheduleRow) => row.routeId === routeId)
-          ?.trips.push({time, timeStr});
+        let scheduleRow = this.scheduleObject.rows.find((row: ScheduleRow) => row.hour === hour);
+        if (!scheduleRow) {
+          const len = this.scheduleObject.rows.push({hour, rowRoutes: []});
+          scheduleRow = this.scheduleObject.rows[len - 1];
+        }
+
+        let rowRoute = scheduleRow.rowRoutes.find((r: RowRouteSchedule) => r.route.id === route.id);
+        if (!rowRoute) {
+          const len = scheduleRow.rowRoutes.push({route, trips: []});
+          rowRoute = scheduleRow.rowRoutes[len - 1];
+        }
+        rowRoute.trips.push(rowTrip);
       });
     });
 
-    console.log('scheduleRows', this.scheduleRows);
-    // this.schedule = this.scheduleRows.join(', ');
+    this.checkScheduleObjectShow();
+  }
+
+  private checkScheduleObjectShow(): void {
+    this.scheduleObject.show = this.scheduleObject.routes.some((route: Route) => route.show);
   }
 
   changeRouteShow(route: Route): void {
     route.show = !route.show;
     console.log('routes', this.routes);
     this.prepareStationsForSelect();
-    this.updateSchedule();
+    this.checkScheduleObjectShow();
   }
 
   changeDayShow(day: DAY): void {

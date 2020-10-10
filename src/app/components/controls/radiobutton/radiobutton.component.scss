@@ -3,41 +3,47 @@ label {
   margin: 0;
   position: relative;
 
+  .box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: all 0.1s linear;
+  }
+
   input {
     position: absolute;
     width: 0px;
     height: 0px;
     overflow: hidden;
     clip: rect(0 0 0 0);
-  }
-  
-  .box {
-    width: 20px;
-    height: 20px;
-  }
-  
-  input:enabled + .box {
-    cursor: pointer;
-  }
-  
-  input + * .box__off {
-    fill: var(--label-tetriary);
-  }
-  
-  input:checked {
+
+    &:enabled + .box {
+      cursor: pointer;
+    }
+
+    &:focus + .box {
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    }
+    
     & + * .box__off {
-      fill: none;
+      fill: var(--label-tetriary);
     }
-  
-    & + * .box__back {
-      fill: var(--accent-blue);
-    }
-  
-    & + * .box__front {
-      fill: var(--light-01);
+
+    &:checked {
+      & + * .box__off {
+        fill: none;
+      }
+    
+      & + * .box__back {
+        fill: var(--accent-blue);
+      }
+    
+      & + * .box__front {
+        fill: var(--light-01);
+      }
     }
   }
-  
+
   .text {
     overflow: hidden;
     text-overflow: ellipsis;

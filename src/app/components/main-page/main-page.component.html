@@ -38,6 +38,8 @@
     <ng-select 
       class="custom-select"
       placeholder="Выберите остановку"
+      notFoundText="Таких остановок не найдено"
+      clearAllText="Сбросить"
       [items]="stationsForSelect"
       (change)="changeStation($event)"
       bindValue="id"
@@ -54,7 +56,7 @@
       </ng-template>
     </ng-select>
   
-    <div class="schedule-block">
+    <div class="schedule-block scroller">
       <div *ngIf="scheduleObject.show" class="schedule">
   
         <ng-container *ngFor="let row of scheduleObject.rows">
@@ -66,7 +68,7 @@
                 <div class="route-trips">
                   <span *ngFor="let trip of rowRoute.trips" 
                     [ngClass]="{'depot': trip.to_depot}"
-                  >{{ trip.timeStr }}{{ trip.to_depot ? ' (до депо)' : '' }}</span>
+                  >{{ trip.timeStr }}{{ trip.to_depot ? '&nbsp;(до депо)' : '' }}</span>
                 </div>
                 <div class="route-number">[{{ rowRoute.route.id }}]</div>
               </div>
@@ -85,7 +87,7 @@
         [checked]="showCurrentTime"
         textRight="На текущее время:">
       </checkbox>
-      <div>{{ currentDatetime | date:'E, d MMM, hh:mm' }}</div>
+      <div>{{ currentDatetime | date:'E, d MMM, HH:mm:ss' }}</div>
     </div>
 
     <div>

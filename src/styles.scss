@@ -40,3 +40,131 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+// Custom scrollbar (CSS Scrollbars & -webkit-scrollbar)
+
+.scroller,
+.ng-dropdown-panel .scroll-host {
+  scrollbar-width: thin;
+  scrollbar-color: var(--grey-02) transparent;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+
+    &-thumb {
+      background-color: var(--grey-02);
+      border-radius: 20px;
+      // border: 1px solid var(--grey-04);
+    }
+
+    // &-track {
+    //   background: var(--grey-04);
+    // }
+  }
+}
+
+// Custom ng-select
+
+.ng-select.custom-select {
+  margin-bottom: 8px;
+
+  .ng-select-container {
+    color: var(--label-primary);
+    background-color: var(--light-01);
+    border: 1px solid var(--label-secondary);
+    transition: all 0.1s linear;
+
+    &:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .ng-value-container .ng-placeholder {
+      color: var(--label-secondary);
+    }
+  }
+
+  &.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .ng-clear-wrapper {
+    width: 24px;
+    height: 20px;
+    text-align: center;
+    color: var(--label-secondary);
+    transition: all 0.1s linear;
+
+    &:after {
+      content: "\2A09"; // N-ARY TIMES OPERATOR
+      font-size: 18px;
+      line-height: 18px;
+    }
+
+    &:hover {
+      color: var(--accent-blue);
+      box-shadow: none;
+    }
+
+    .ng-clear {
+      display: none;
+    }
+  }
+
+  .ng-arrow-wrapper {
+    opacity: 0.8;
+
+    .ng-arrow {
+      // transition: all 0.1s linear;
+      border-color: var(--label-secondary) transparent transparent;
+    }
+
+    &:hover .ng-arrow {
+      border-color: var(--accent-blue) transparent transparent;
+    }
+  }
+
+  &.ng-select-opened > .ng-select-container {
+    background-color: var(--light-01);
+
+    .ng-arrow {
+      border-color: transparent transparent var(--label-secondary);
+    }
+
+    .ng-arrow-wrapper:hover .ng-arrow {
+      border-color: transparent transparent var(--accent-blue);
+    }
+  }
+
+  .ng-dropdown-panel {
+    background-color: var(--light-01);
+    border: 1px solid var(--grey-01);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+    padding-right: 2px;
+    padding-bottom: 4px;
+
+    .ng-dropdown-panel-items {
+      .ng-option {
+        display: flex;
+        justify-content: space-between;
+        color: var(--label-primary);
+        background-color: var(--light-01);
+        transition: all 0.1s linear;
+
+        &.ng-option-marked {
+          color: var(--accent-blue);
+        }
+
+        &.ng-option-selected,
+        &.ng-option-selected.ng-option-marked {
+          color: var(--label-primary);
+          background-color: var(--disabled-24);
+        }
+
+        &.ng-option-disabled {
+          color: var(--label-tetriary);
+        }
+      }
+    }
+  }
+}

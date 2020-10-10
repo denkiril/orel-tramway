@@ -31,6 +31,10 @@ label {
       cursor: pointer;
     }
 
+    &:focus + .box {
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    }
+
     & + * .box__rect,
     & + * .box__frame {
       fill: var(--label-quarternary);
@@ -72,6 +76,7 @@ label {
     flex-shrink: 0;
     width: 16px;
     height: 16px;
+    transition: all 0.1s linear;
   }
 
   .text {

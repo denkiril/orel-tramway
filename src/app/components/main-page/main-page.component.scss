@@ -67,41 +67,45 @@
 .schedule-block {
   height: 540px;
   overflow-y: auto;
-  // background-color: aquamarine;
+}
 
-  .schedule {
-    width: 540px;
-    margin-left: 8px;
-  }
+.schedule {
+  width: 540px;
+  margin-left: 8px;
 
   .schedule-row {
     padding: 4px;
     border-bottom: solid 1px var(--disabled-24);
   }
-
+  
   .route {
     display: flex;
     justify-content: space-between;
     // align-items: center;
-
+  
     .route-trips {
       display: flex;
       flex-wrap: wrap;
     }
-
+  
     .route-number {
       flex-shrink: 0;
     }
   }
-
+  
   span {
     margin-right: 8px;
-  }
 
+    &.past {
+      color: var(--label-secondary);
+    }
+  }
+  
   .depot {
     color: var(--accent-pink);
   }
 }
+
 
 @media (max-width: 992px) {
   .schedule-block {
@@ -124,4 +128,8 @@
     display: flex;
     align-items: center;
   }
+}
+
+.unchecked {
+  color: var(--label-secondary);
 }

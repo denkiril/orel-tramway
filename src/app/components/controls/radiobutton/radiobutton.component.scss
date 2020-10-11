@@ -50,4 +50,17 @@ label {
     white-space: nowrap;
     margin: 0 8px;
   }
+
+  // Colorize text
+  .text {
+    color: var(--label-secondary);
+  }
+
+  input:checked ~ .text {
+    color: var(--label-primary);
+  }
+
+  input:disabled ~ .text {
+    color: var(--label-secondary);
+  }
 }

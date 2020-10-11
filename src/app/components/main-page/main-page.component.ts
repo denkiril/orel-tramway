@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Observer} from 'rxjs';
 import {first} from 'rxjs/operators';
 
 enum DAY {
@@ -86,14 +86,30 @@ export class MainPageComponent implements OnInit {
   showDay = DAY.WORKDAY;
   today = DAY.WORKDAY; // TODO определять
   scheduleObject: ScheduleObject = {routes: [], rows: [], show: false};
-  currentDatetime: Date | undefined;
+  currentDate: Observable<Date>;
   showCurrentTime = true;
+  showSpecifiedTime = false;
+  currentTime = 0;
 
-  constructor(private http: HttpClient, private changeDetector: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private changeDetector: ChangeDetectorRef) {
+    this.currentDate = new Observable<Date>((observer: Observer<Date>) => {
+      setInterval(() => observer.next(this.getCurrentTime()), 1000);
+    });
+  }
 
   ngOnInit(): void {
-    this.currentDatetime = new Date();
     this.getData();
+  }
+
+  private getCurrentTime(): Date {
+    const date = new Date();
+    const currentTime = date.getHours() * 60 + date.getMinutes();
+    if (this.currentTime !== currentTime) {
+      this.currentTime = currentTime;
+      console.log(this.currentTime);
+    }
+
+    return date;
   }
 
   private getData(): void {
@@ -256,5 +272,9 @@ export class MainPageComponent implements OnInit {
     console.log('changeStation', station);
     this.selectedStationId = station?.id || 0;
     this.updateSchedule();
+  }
+
+  changeTimeShow(): void {
+    console.log('changeTimeShow');
   }
 }

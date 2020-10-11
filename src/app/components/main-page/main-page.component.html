@@ -8,7 +8,7 @@
           <checkbox 
             [size]="20"
             textRight="№ {{ route.id }} {{ route.name }}"
-            [checked]="!!route.show" 
+            [checked]="!!route.show"
             (changeChecked)="changeRouteShow(route)">
           </checkbox>
         </div>
@@ -57,7 +57,8 @@
     </ng-select>
   
     <div class="schedule-block scroller">
-      <div *ngIf="scheduleObject.show" class="schedule">
+      <div *ngIf="scheduleObject.show" 
+        class="schedule">
   
         <ng-container *ngFor="let row of scheduleObject.rows">
           <div class="schedule-row">
@@ -67,7 +68,7 @@
                 >
                 <div class="route-trips">
                   <span *ngFor="let trip of rowRoute.trips" 
-                    [ngClass]="{'depot': trip.to_depot}"
+                    [ngClass]="{'depot': trip.to_depot, 'past': trip.time < currentTime}"
                   >{{ trip.timeStr }}{{ trip.to_depot ? '&nbsp;(до депо)' : '' }}</span>
                 </div>
                 <div class="route-number">[{{ rowRoute.route.id }}]</div>
@@ -81,19 +82,23 @@
   </div>
 
   <div class="time-block">
-    <div>
+    <div [ngClass]="{'unchecked': !showCurrentTime}">
       <checkbox
         [size]="20"
         [checked]="showCurrentTime"
-        textRight="На текущее время:">
+        textRight="На текущее время:"
+        (changeChecked)="showCurrentTime = $event; changeTimeShow()">
       </checkbox>
-      <div>{{ currentDatetime | date:'E, d MMM, HH:mm:ss' }}</div>
+      <div>{{ currentDate | async | date:'E, d MMM, HH:mm:ss' }}</div>
     </div>
 
     <div>
       <checkbox
         [size]="20"
-        textRight="На выбранное время:">
+        [checked]="showSpecifiedTime"
+        [disabled]="showCurrentTime"
+        textRight="На выбранное время:"
+        (changeChecked)="showSpecifiedTime = $event; changeTimeShow()">
       </checkbox>
     </div>
   </div>

@@ -168,3 +168,9 @@ body {
     }
   }
 }
+
+// ngx-bootstrap timepicker
+
+.bs-timepicker-field.is-invalid {
+  border-color: var(--accent-red);
+}

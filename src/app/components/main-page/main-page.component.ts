@@ -88,8 +88,10 @@ export class MainPageComponent implements OnInit {
   scheduleObject: ScheduleObject = {routes: [], rows: [], show: false};
   currentDate: Observable<Date>;
   showCurrentTime = true;
-  showSpecifiedTime = false;
-  currentTime = 0;
+  showSpecifiedTime = true;
+  private currentTime = 0;
+  specifiedDate = new Date();
+  controlTime = 0;
 
   constructor(private http: HttpClient, private changeDetector: ChangeDetectorRef) {
     this.currentDate = new Observable<Date>((observer: Observer<Date>) => {
@@ -99,6 +101,7 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    this.setControlTime();
   }
 
   private getCurrentTime(): Date {
@@ -106,7 +109,8 @@ export class MainPageComponent implements OnInit {
     const currentTime = date.getHours() * 60 + date.getMinutes();
     if (this.currentTime !== currentTime) {
       this.currentTime = currentTime;
-      console.log(this.currentTime);
+      if (this.showCurrentTime) this.controlTime = this.currentTime;
+      console.log('currentTime:', this.currentTime);
     }
 
     return date;
@@ -274,7 +278,26 @@ export class MainPageComponent implements OnInit {
     this.updateSchedule();
   }
 
-  changeTimeShow(): void {
-    console.log('changeTimeShow');
+  setControlTime(): void {
+    if (this.showCurrentTime) {
+      this.controlTime = this.currentTime;
+    } else if (this.showSpecifiedTime) {
+      this.controlTime = this.calcSpecifiedTime();
+    } else {
+      this.controlTime = 0;
+    }
+    console.log('setControlTime:', this.controlTime);
+  }
+
+  onSpecifiedDateChange(): void {
+    console.log('onSpecifiedDateChange specifiedDate:', this.specifiedDate);
+    this.controlTime = this.calcSpecifiedTime();
+    console.log('controlTime:', this.controlTime);
+  }
+
+  private calcSpecifiedTime(): number {
+    return this.specifiedDate
+      ? this.specifiedDate.getHours() * 60 + this.specifiedDate.getMinutes()
+      : 0;
   }
 }

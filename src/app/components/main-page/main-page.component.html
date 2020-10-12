@@ -68,7 +68,7 @@
                 >
                 <div class="route-trips">
                   <span *ngFor="let trip of rowRoute.trips" 
-                    [ngClass]="{'depot': trip.to_depot, 'past': trip.time < currentTime}"
+                    [ngClass]="{'depot': trip.to_depot, 'past': trip.time < controlTime}"
                   >{{ trip.timeStr }}{{ trip.to_depot ? '&nbsp;(до депо)' : '' }}</span>
                 </div>
                 <div class="route-number">[{{ rowRoute.route.id }}]</div>
@@ -87,8 +87,9 @@
         [size]="20"
         [checked]="showCurrentTime"
         textRight="На текущее время:"
-        (changeChecked)="showCurrentTime = $event; changeTimeShow()">
+        (changeChecked)="showCurrentTime = $event; setControlTime()">
       </checkbox>
+
       <div>{{ currentDate | async | date:'E, d MMM, HH:mm:ss' }}</div>
     </div>
 
@@ -98,8 +99,17 @@
         [checked]="showSpecifiedTime"
         [disabled]="showCurrentTime"
         textRight="На выбранное время:"
-        (changeChecked)="showSpecifiedTime = $event; changeTimeShow()">
+        (changeChecked)="showSpecifiedTime = $event; setControlTime()">
       </checkbox>
+
+      <timepicker 
+        [(ngModel)]="specifiedDate"
+        (ngModelChange)="onSpecifiedDateChange()"
+        [disabled]="showCurrentTime"
+        [showMeridian]="false"
+        [showSpinners]="false"
+        [minuteStep]="1"
+      ></timepicker>
     </div>
   </div>
 </div>

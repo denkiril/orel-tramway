@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 
 import {NgSelectModule} from '@ng-select/ng-select';
+import {TimepickerModule} from 'ngx-bootstrap/timepicker';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -14,7 +15,14 @@ import {RadiobuttonComponent} from './components/controls/radiobutton/radiobutto
 
 @NgModule({
   declarations: [AppComponent, MainPageComponent, CheckboxComponent, RadiobuttonComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, NgSelectModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NgSelectModule,
+    FormsModule,
+    TimepickerModule.forRoot()
+  ],
   providers: [{provide: LOCALE_ID, useValue: 'ru'}],
   bootstrap: [AppComponent]
 })

@@ -1,14 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataFolder = '../src/assets/data/';
+const inputDataFolder = '/';
+const outputDataFolder = '../src/assets/data/';
 
 // Input data
-const routesPath = path.join(__dirname, dataFolder, 'data.json');
+const routesPath = path.join(__dirname, inputDataFolder, 'data.json');
 // const stationsPath = path.join(__dirname, dataFolder, 'stations.json');
 
 // Output data
-const schedulePath = path.join(__dirname, dataFolder, 'schedule.json');
+const schedulePath = path.join(__dirname, outputDataFolder, 'schedule.json');
 
 const routesJson = fs.readFileSync(routesPath);
 const routes = JSON.parse(routesJson);

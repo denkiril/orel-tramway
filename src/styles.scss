@@ -1,5 +1,4 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import './assets/fonts/ubuntu';
 
 :root {
   --accent-red: #FF3B30;
@@ -27,6 +26,32 @@
   --label-tetriary: rgba(60, 60, 67, 0.3);
   --label-quarternary: rgba(60, 60, 67, 0.18);
 }
+
+// Fonts
+
+/* ubuntu-300 - cyrillic_latin */
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('Ubuntu Light'), local('Ubuntu-Light'),
+    url('/assets/fonts/ubuntu/ubuntu-v13-cyrillic_latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('/assets/fonts/ubuntu/ubuntu-v13-cyrillic_latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* ubuntu-regular - cyrillic_latin */
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Ubuntu Regular'), local('Ubuntu-Regular'),
+    url('/assets/fonts/ubuntu/ubuntu-v13-cyrillic_latin-regular.woff2') format('woff2'),
+    url('/assets/fonts/ubuntu/ubuntu-v13-cyrillic_latin-regular.woff') format('woff');
+}
+
+// Common
 
 body {
   font-family: 'Ubuntu', sans-serif;

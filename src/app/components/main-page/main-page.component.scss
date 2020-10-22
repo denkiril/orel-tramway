@@ -133,3 +133,7 @@
 .unchecked {
   color: var(--label-secondary);
 }
+
+.text {
+  transition: color .1s linear;
+}

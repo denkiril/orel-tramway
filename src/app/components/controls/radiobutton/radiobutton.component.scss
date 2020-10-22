@@ -21,7 +21,7 @@ label {
       cursor: pointer;
     }
 
-    &:focus + .box {
+    &:focus-visible + .box {
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
     }
     
@@ -54,6 +54,7 @@ label {
   // Colorize text
   .text {
     color: var(--label-secondary);
+    transition: color .1s linear;
   }
 
   input:checked ~ .text {

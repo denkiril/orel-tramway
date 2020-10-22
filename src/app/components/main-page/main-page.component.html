@@ -90,7 +90,7 @@
         (changeChecked)="showCurrentTime = $event; setControlTime()">
       </checkbox>
 
-      <div>{{ currentDate | async | date:'E, d MMM, HH:mm:ss' }}</div>
+      <div class="text">{{ currentDate | async | date:'E, d MMM, HH:mm:ss' }}</div>
     </div>
 
     <div>

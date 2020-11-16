@@ -1,0 +1,109 @@
+<div class="controls-block">
+  <div class="routes-block">
+    <div *ngFor="let route of routes" 
+      class="control">
+      <checkbox 
+        [size]="20"
+        textRight="№ {{ route.id }} {{ route.name }}"
+        [checked]="!!route.show"
+        (changeChecked)="changeRouteShow(route)">
+      </checkbox>
+    </div>
+  </div>
+
+  <div>
+    <p class="days-header">Расписание на:</p>
+
+    <div class="control">
+      <radiobutton 
+        textRight="рабочий день{{today === DAY.WORKDAY ? IS_TODAY : ''}}"
+        [checked]="showDay === DAY.WORKDAY"
+        (changeValue)="changeDayShow(DAY.WORKDAY)">
+      </radiobutton>
+    </div>
+
+    <div class="control">
+      <radiobutton 
+        textRight="выходной день{{today === DAY.DAYOFF ? IS_TODAY : ''}}"
+        [checked]="showDay === DAY.DAYOFF"
+        (changeValue)="changeDayShow(DAY.DAYOFF)">>
+      </radiobutton>
+    </div>
+  </div>
+</div>
+
+<ng-select 
+  class="custom-select"
+  placeholder="Выберите остановку"
+  notFoundText="Таких остановок не найдено"
+  clearAllText="Сбросить"
+  [items]="stationsForSelect"
+  (change)="changeStation($event)"
+  bindValue="id"
+  bindLabel="name"
+>
+  <ng-template ng-option-tmp let-item="item">
+    <span>{{ item.name }}</span>
+    <span>{{ item.routesStr }}</span>
+  </ng-template>
+
+  <ng-template ng-label-tmp let-item="item">
+    <span>{{ item.name }}</span>
+    <span class="routes-str">{{ item.routesStr }}</span>
+  </ng-template>
+</ng-select>
+
+<div class="schedule-block scroller">
+  <div *ngIf="scheduleObject.show" 
+    class="schedule">
+
+    <ng-container *ngFor="let row of scheduleObject.rows">
+      <div class="schedule-row">
+        <ng-container *ngFor="let rowRoute of row.rowRoutes">
+          <div *ngIf="rowRoute.route.show"
+            class="route"
+            >
+            <div class="route-trips">
+              <span *ngFor="let trip of rowRoute.trips" 
+                [ngClass]="{'depot': trip.to_depot, 'past': trip.time < controlTime}"
+              >{{ trip.timeStr }}{{ trip.to_depot ? '&nbsp;(до депо)' : '' }}</span>
+            </div>
+            <div class="route-number">[{{ rowRoute.route.id }}]</div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
+
+<div class="time-block">
+<div [ngClass]="{'unchecked': !showCurrentTime}">
+  <checkbox
+    [size]="20"
+    [checked]="showCurrentTime"
+    textRight="На текущее время:"
+    (changeChecked)="showCurrentTime = $event; setControlTime()">
+  </checkbox>
+
+  <div class="text">{{ currentDate | async | date:'E, d MMM, HH:mm:ss' }}</div>
+</div>
+
+<div>
+  <checkbox
+    [size]="20"
+    [checked]="showSpecifiedTime"
+    [disabled]="showCurrentTime"
+    textRight="На выбранное время:"
+    (changeChecked)="showSpecifiedTime = $event; setControlTime()">
+  </checkbox>
+
+  <timepicker 
+    [(ngModel)]="specifiedDate"
+    (ngModelChange)="onSpecifiedDateChange()"
+    [disabled]="showCurrentTime"
+    [showMeridian]="false"
+    [showSpinners]="false"
+    [minuteStep]="1"
+  ></timepicker>
+</div>

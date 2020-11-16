@@ -9,12 +9,21 @@ import {TimepickerModule} from 'ngx-bootstrap/timepicker';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {MainPageComponent} from './components/main-page/main-page.component';
 import {CheckboxComponent} from './components/controls/checkbox/checkbox.component';
 import {RadiobuttonComponent} from './components/controls/radiobutton/radiobutton.component';
+import {MainPageComponent} from './components/main-page/main-page.component';
+import {ComplexScheduleComponent} from './components/complex-schedule/complex-schedule.component';
+import {MainMapComponent} from './components/main-map/main-map.component';
 
 @NgModule({
-  declarations: [AppComponent, MainPageComponent, CheckboxComponent, RadiobuttonComponent],
+  declarations: [
+    AppComponent,
+    CheckboxComponent,
+    RadiobuttonComponent,
+    MainPageComponent,
+    ComplexScheduleComponent,
+    MainMapComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

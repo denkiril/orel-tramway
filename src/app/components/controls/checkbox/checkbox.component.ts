@@ -4,7 +4,6 @@ import {
   forwardRef,
   Output,
   EventEmitter,
-  AfterContentInit,
   ViewChild,
   ElementRef,
   Renderer2,
@@ -26,7 +25,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
     }
   ]
 })
-export class CheckboxComponent implements AfterViewInit, AfterContentInit, ControlValueAccessor {
+export class CheckboxComponent implements AfterViewInit, ControlValueAccessor {
   @Input() controlTitle: string | undefined;
   @Input() checked = false;
   @Input() disabled = false;
@@ -66,10 +65,6 @@ export class CheckboxComponent implements AfterViewInit, AfterContentInit, Contr
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
-  }
-
-  ngAfterContentInit(): void {
-    this.onChange(this.checked);
   }
 
   change(): void {

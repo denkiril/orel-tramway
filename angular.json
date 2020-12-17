@@ -30,7 +30,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/vanilla-js-wheel-zoom/dist/wheel-zoom.min.js"
+            ]
           },
           "configurations": {
             "production": {

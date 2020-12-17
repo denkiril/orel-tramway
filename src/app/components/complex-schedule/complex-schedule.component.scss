@@ -93,6 +93,17 @@
   }
 }
 
+@media (max-width: 476px) {
+  .time-block > div {
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+
+    & > *:last-child {
+      margin-left: auto;
+    }
+  }
+}
+
 .unchecked {
   color: var(--label-secondary);
 }
